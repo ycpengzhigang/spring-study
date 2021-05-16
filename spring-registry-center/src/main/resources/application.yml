@@ -1,0 +1,24 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: spring-eureka-registry-center
+
+#  zone
+#  上面提到 serviceUrl，那就顺便说下 defaultZone
+#  Eureka 有一个 Region 和 Zone 的概念，你可以理解为现实中的大区（Region）和机房（Zone）
+#  Eureka Client 在启动时需要指定 Zone，它会优先请求自己 Zone 的 Eureka Server 获取注册列表
+#  同样的，Eureka Server 在启动时也需要指定 Zone，如果没有指定的话，其会默认使用 defaultZone
+eureka:
+  client:
+    register-with-eureka: false # 设置是否将自己作为客户端注册到注册中心（缺省true）
+    # 设置是否从注册中心获取注册信息（缺省true）
+    # 因为这是一个单点的EurekaServer，不需要同步其它EurekaServer节点的数据，故设为false
+    fetch-registry: false
+    serviceUrl:
+      defaultZone: http://localhost:${server.port}/eureka/
+  server:
+    # 是否开启自我保护模式
+    enable-self-preservation: true
+    # 续期时间，即扫描失效服务的间隔时间（缺省为60*1000ms）
+    eviction-interval-timer-in-ms: 10000

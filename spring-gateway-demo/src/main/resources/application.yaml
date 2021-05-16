@@ -1,0 +1,116 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: gateway-demo
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          lower-case-service-id: true # 服务名称转换为小写
+      routes: # 针对的是list中是泛型的情况
+        - id: service01
+          uri: lb://spring-service01 # 测试静态代理
+          #          uri: lb://localhost:8087
+          predicates:
+            #            - Path=/item/{service01}
+            - Path=/static*,
+          #            - Path=/item/static*,
+          #            - Query=zhi # 表示的是请求路径是这个的话将会调用上面这个服务
+          #            - Query=gang,name. # .:表示的是任意字符 支持正则表达式
+          #            - name: Query
+          #              args: # 这里使用的是map的写法
+          #                param: age
+          #                regexp: \d{1,3}
+          #            - Header=Connection,keep-alive # 设置请求头参数 =：表示的是key,","之后表示的是value
+          #            - Method=Get,post # 设置请求方式
+          #            - RemoteAddr=127.0.0.1 # 设置远程地址 允许远程通过什么的IP地址进行访问
+          #            - Host=127.0.0.1:8081 # ?:表示的是一个字符 *:表示的是一个0个或者多个字符 **：表示的是一个或者多个目录
+          #            - Cookie=sessionId,abc # 设置Cookie的值
+          #            - Weight=group,2
+          filters:
+            - name: Custom # 自定义拦截器
+              args:
+                name: zhigang
+                age: 30
+          #            - name: RequestRateLimiter # 配置限流的
+          #              args:
+          #                #                keyResolver: '#{@customerLimiterComponent}' # 限流的依据是什么
+          #                #                redis-rate-limiter.replenishRate: 1 # 流速 每秒往桶中放几个令牌
+          #                #                redis-rate-limiter.burstCapacity: 3 # 桶的容量 表示的是桶的容量
+          #                key-resolver: '#{@pathAsKeyResolver}'
+          #                redis-rate-limiter.replenishRate: 200
+          #                redis-rate-limiter.burstCapacity: 600
+          #            - name: Hystrix # 配置熔断信息
+          #              args:
+          #                fallbackUri: forward:/staticHello
+          #                name: fallbackcmd
+          #            - AddRequestHeader=name,zhigang # 过滤器 增加请求头
+          #            - StripPrefix=1 # 针对Path中跳过 /item 从1开始计算
+          #            - SetPath=/{service01} # 结合path的占位符 网关传入的是什么 到下游就是什么 不能使用多级 /a/b的情况
+          #            - name: RedirectTo # 测试重定向
+          #              args:
+          #                status: 302
+          #                url: https://www.baidu.com # 重定向到百度
+          #            - AddResponseHeader=res,world # 增加响应头
+          #            - AddRequestParameter=eat,food # 增加请求参数
+          #            - DedupeResponseHeader=res,RETAIN_LAST # 网关和服务之间的存在相同参数时的保留策略 网关为first -》 服务last
+          #            - Before=  # 表示的是在什么时间范围之前能够进行访问
+          #            - After= # 表示的是在什么时间范围之后能够进行访问
+          #            - Between= # 表示的是在什么时间范围之间能够进行访问
+          #            - Weight= # 负载均衡的策略
+          #        - id: service01
+          #          uri: lb://spring-service02 # 测试静态代理
+          #          uri: lb://localhost:8086
+          #          predicates:
+          #            - Path=/static*,
+          #            - Query=zhi # 表示的是请求路径是这个的话将会调用上面这个服务
+          #            - Query=gang,name. # .:表示的是任意字符 支持正则表达式
+        #            - name: Query
+        #              args: # 这里使用的是map的写法
+        #                param: age
+        #                regexp: \d{1,3}
+        #            - Header=Connection,keep-alive # 设置请求头参数 =：表示的是key,","之后表示的是value
+        #            - Method=Get,post # 设置请求方式
+        #            - RemoteAddr=127.0.0.1 # 设置远程地址 允许远程通过什么的IP地址进行访问
+        #            - Host=127.0.0.1:8081 # ?:表示的是一个字符 *:表示的是一个0个或者多个字符 **：表示的是一个或者多个目录
+        #            - Cookie=sessionId,abc # 设置Cookie的值
+        #            - Weight=group,8 # 设置权重
+        #           - Before=  # 表示的是在什么时间范围之前能够进行访问
+        #           - After= # 表示的是在什么时间范围之后能够进行访问
+        #           - Between= # 表示的是在什么时间范围之间能够进行访问
+        #           - Weight= # 负载均衡的策略
+    redis:
+    host: 39.108.233.233
+    port: 53790
+    password: g6RmA0IFjLMPUAn
+    database: 0
+    # 连接超时时间（毫秒）
+    timeout: 10000
+    lettuce:
+      pool:
+        # 连接池中的最大空闲连接
+        max-idle: 8
+        # 连接池中的最小空闲连接
+        min-idle: 10
+        # 连接池最大连接数（使用负值表示没有限制）
+        max-active: 500
+        # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1
+
+eureka:
+  client:
+    serviceUrl: # 这里是map的写法
+      defaultZone: http://localhost:8080/eureka/
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+    # 发呆时间，即服务续约到期时间（缺省为90s）
+    lease-expiration-duration-in-seconds: 90
+    # 心跳时间，即服务续约间隔时间（缺省为30s）
+    lease-renewal-interval-in-seconds: 30
+    # 设置微服务调用地址为IP优先（缺省为false）
+    prefer-ip-address: false
+
+# 配置redis
+
