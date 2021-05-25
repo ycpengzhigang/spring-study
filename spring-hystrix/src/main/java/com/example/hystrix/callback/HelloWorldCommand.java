@@ -17,7 +17,6 @@ public class HelloWorldCommand extends HystrixCommand<String> {
 
     private final String name;
 
-
     public HelloWorldCommand(String name) {
         super(Setter
                 .withGroupKey(HystrixCommandGroupKey
