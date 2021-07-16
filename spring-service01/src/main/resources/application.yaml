@@ -1,6 +1,8 @@
 spring:
   application:
     name: spring-service01
+  profiles:
+    active: dev
 server:
   port: 8086
 eureka:
@@ -20,4 +22,5 @@ eureka:
 logging:
   level:
     com.example.sentinel.SentinelSerivceDemo: debug
+
 

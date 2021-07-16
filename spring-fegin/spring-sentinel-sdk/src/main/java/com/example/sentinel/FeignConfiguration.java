@@ -4,6 +4,7 @@ import feign.Logger;
 import feign.RequestInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 /**
  * @author zhigang.peng
@@ -17,9 +18,16 @@ public class FeignConfiguration {
      *
      * @return
      */
-    @Bean
+    @Bean("feignLoggerLevel")
+    @Profile("dev")
     public Logger.Level feignLoggerLevel() {
         return Logger.Level.FULL;
+    }
+
+    @Bean("feignLoggerLevel")
+    @Profile("test")
+    public Logger.Level feignLoggerLevelTest() {
+        return Logger.Level.NONE;
     }
 
     /**
