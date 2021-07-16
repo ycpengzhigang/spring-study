@@ -1,8 +1,8 @@
 spring:
   application:
-    name: spring-service01
+    name: spring-sentinel
 server:
-  port: 8086
+  port: 8088
 eureka:
   client:
     serviceUrl:
@@ -15,9 +15,4 @@ eureka:
     lease-renewal-interval-in-seconds: 30
     # 设置微服务调用地址为IP优先（缺省为false）
     prefer-ip-address: false
-
-
-logging:
-  level:
-    com.example.sentinel.SentinelSerivceDemo: debug
 
