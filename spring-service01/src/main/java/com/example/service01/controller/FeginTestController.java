@@ -16,7 +16,7 @@ public class FeginTestController {
     @Autowired
     private FeginTestService feginTestService;
 
-    @GetMapping("sayHello/{name}")
+    @GetMapping("/sentinel/sayHello/{name}")
     public String sayHello(@PathVariable String name) {
         return feginTestService.testSay(name);
     }
