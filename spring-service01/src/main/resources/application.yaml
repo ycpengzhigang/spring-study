@@ -18,9 +18,14 @@ eureka:
     # 设置微服务调用地址为IP优先（缺省为false）
     prefer-ip-address: false
 
+feign:
+  sentinel:
+    enabled: true
 
 logging:
   level:
     com.example.sentinel.SentinelSerivceDemo: debug
 
-
+ribbon:
+  eager-load:
+    enabled: false

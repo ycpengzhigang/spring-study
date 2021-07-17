@@ -29,7 +29,6 @@
             <artifactId>spring-sentinel-sdk</artifactId>
             <version>${project.version}</version>
         </dependency>
-
     </dependencies>
 
 </project>

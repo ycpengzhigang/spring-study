@@ -8,4 +8,6 @@ package com.example.service01.service;
 public interface FeginTestService {
 
     String testSay(String param);
+
+    String testSentinelFallback(String param);
 }
